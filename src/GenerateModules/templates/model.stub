@@ -1,0 +1,12 @@
+<?php
+
+namespace {{package}}{{namespace}}\Models;
+
+use Igorwanbarros\BaseLaravel\Models\BaseModel;
+
+class {{class}} extends BaseModel
+{
+
+    protected $table = '{{table}}';
+
+}

@@ -1,0 +1,34 @@
+{
+    "name": "{{package}}{{module}}",
+    "description": "{{module}}",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+        }
+    ],
+    "require": {
+      "php": ">=5.5.9",
+      "igorwanbarros/commands-laravel" : "dev-master"
+    },
+    "require-dev": {
+      "igorwanbarros/development-laravel" : "dev-master"
+    },
+    "autoload-dev": {
+      "psr-4": {
+        "{{psr}}\\": "src/"
+      }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "php post-composer.php",
+            "php artisan clear-compiled",
+            "php artisan optimize"
+        ],
+        "post-update-cmd": [
+            "php post-composer.php",
+            "php artisan optimize"
+        ]
+    },
+    "minimum-stability": "dev"
+}

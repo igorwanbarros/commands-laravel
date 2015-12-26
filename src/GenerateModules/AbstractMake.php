@@ -3,40 +3,35 @@
 namespace Igorwanbarros\CommandsLaravel\GenerateModules;
 
 
-use Illuminate\Console\Command;
-use Illuminate\Contracts\Bus\SelfHandling;
-
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\App;
 
-abstract class AbstractMakeModuleCommand extends Command implements SelfHandling
+abstract class AbstractMake
 {
 
-    protected   $signature          = 'make:module-laravel {module : module name}';
-    protected   $description        = "Generate new module for Laravel.";
     private     $files;
     private     $namesModules       = [];
     private     $fileExtension      = '.php';
     private     $fileName           = 'default';
     private     $filePath           = '';
-    private     $stubPath           = '';
+    private     $stubPath           = 'templates/';
     private     $currentPath;
     private     $arguments;
+    private     $package            = '';
+    private     $replacedStub       = null;
 
 
-    public function __construct(Filesystem $files, $arguments)
+    public function __construct(array $arguments)
     {
-        $this->files        = $files;
+        $this->files        = new Filesystem();
         $this->arguments    = $arguments;
-
-        parent::__construct();
     }
 
 
 
     public function build()
     {
-        $this->init();
+        $this->replacesDefaultFields();
 
         $this->_createRootDirectory();
 
@@ -48,13 +43,22 @@ abstract class AbstractMakeModuleCommand extends Command implements SelfHandling
     }
 
 
-
-    public abstract function getReplace();
-
-
-    public abstract function init();
+    public abstract function replacesDefaultFields();
 
 
+
+    public function getReplacedStub()
+    {
+        return $this->replacedStub;
+    }
+
+
+    public function setReplacedStub($stub)
+    {
+        $this->replacedStub = $stub;
+
+        return $this;
+    }
 
 
     /**
@@ -75,7 +79,7 @@ abstract class AbstractMakeModuleCommand extends Command implements SelfHandling
      */
     public function nameModules($key)
     {
-        if (!$this->_existeKeyNameModules($key)) {
+        if (!$this->_existesKeyNameModules($key)) {
             return false;
         }
 
@@ -102,7 +106,7 @@ abstract class AbstractMakeModuleCommand extends Command implements SelfHandling
     public function arguments($key)
     {
         if (!array_key_exists($key, $this->arguments)) {
-            $this->error("Key {$key} not found into arguments");
+            throw new \Exception("Key {$key} not found into arguments");
         }
 
         return $this->arguments[$key];
@@ -134,7 +138,7 @@ abstract class AbstractMakeModuleCommand extends Command implements SelfHandling
 
     public function getCurrentPath()
     {
-        if (!isset($this->currentPath)) {
+        if (!$this->currentPath) {
             $this->currentPath = dirname(App::getFacadeApplication()->basePath());
         }
 
@@ -152,23 +156,31 @@ abstract class AbstractMakeModuleCommand extends Command implements SelfHandling
 
 
 
-    public function setReplace($key, $value, $stub)
+    public function setReplace($key, $value)
     {
-        return str_replace("{{" . $key . "}}", $value, $stub);
+        $stub = $this->replacedStub;
+
+        if ($stub == '') {
+            $stub = $this->getStubFile();
+        }
+
+        $this->replacedStub = str_replace("{{" . $key . "}}", $value, $stub);
+
+        return $this;
     }
 
 
 
     public function getCamelCase($name)
     {
-        return str_replace(' ', '', ucwords(str_replace(['_', '-'], [' ', ' '], $name)));
+        return str_replace(' ', '', ucwords(str_replace(['_', '-', '.'], [' ', ' ', ' '], $name)));
     }
 
 
 
     public function getLowerCase($name)
     {
-        return strtolower($this->getCamelCase($name));
+        return strtolower(str_replace(' ', '', str_replace(['_', '-', '.'], [' ', ' ', ' '], $name)));
     }
 
 
@@ -217,9 +229,24 @@ abstract class AbstractMakeModuleCommand extends Command implements SelfHandling
     }
 
 
+    public function getPackage()
+    {
+        return $this->package;
+    }
 
 
-    protected function _existeKeyNameModules($key)
+
+    public function setPackage($package)
+    {
+        $this->package = $package;
+
+        return $this;
+    }
+
+
+
+
+    protected function _existesKeyNameModules($key)
     {
         if (!array_key_exists($key, $this->namesModules)) {
             return false;
@@ -233,11 +260,8 @@ abstract class AbstractMakeModuleCommand extends Command implements SelfHandling
     {
         $dir = $this->getCurrentPath() . '/' . $this->arguments('module') . '/' . $this->getFilePath();
         if (!$this->files->isDirectory($dir)) {
-//            if (!$this->ask("Create the directory {$this->currentPath}?", 'Y')) {
-//                $this->info('Operation canceled!');
-//                return false;
-//            }
             $this->files->makeDirectory($dir, 0777, true, true);
+
             return true;
         }
 
@@ -248,7 +272,7 @@ abstract class AbstractMakeModuleCommand extends Command implements SelfHandling
     protected function _createFile()
     {
         if ($this->fileName) {
-            $this->files->put($this->fileName(), $this->getReplace());
+            $this->files->put($this->fullPathFileName(), $this->getReplacedStub());
             return true;
         }
 
@@ -256,11 +280,11 @@ abstract class AbstractMakeModuleCommand extends Command implements SelfHandling
     }
 
 
-    public function fileName()
+    public function fullPathFileName()
     {
         return $this->getcurrentPath() . '/' .
                 $this->arguments('module') . '/' .
                 $this->getFilePath() . '/' .
-                $this->fileName . $this->fileExtension;
+                $this->getFileName() . $this->getFileExtension();
     }
 }

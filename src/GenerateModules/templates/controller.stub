@@ -1,7 +1,6 @@
 <?php
 
-namespace Igorwanbarros\{{namespace}}\Controllers;
-
+namespace {{package}}{{namespace}}\Controllers;
 
 use Igorwanbarros\BaseLaravel\Controllers\BaseController;
 use Illuminate\Http\Request;
@@ -9,9 +8,9 @@ use Illuminate\Http\Request;
 
 class {{class}}Controller extends BaseController
 {
-    public function __construct({{Model}} ${{model}})
+    public function __construct()
     {
-        $this->model    = ${{model}};
+
     }
 
 

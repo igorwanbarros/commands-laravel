@@ -1,0 +1,14 @@
+<?php
+
+echo '-> Copiando App Base'. PHP_EOL;
+shell_exec("cp -r -n vendor/igorwanbarros/development-laravel/* ../{{module}}/ ");
+
+echo '-> Criando arquivo .env'. PHP_EOL;
+shell_exec("cp -r -n vendor/igorwanbarros/development-laravel/.env.example .env");
+
+echo '-> Aplicando permissões'. PHP_EOL;
+shell_exec("chmod -R 777 storage/");
+shell_exec("chmod -R 777 bootstrap/cache");
+
+echo '-> Publicando Arquivos'. PHP_EOL;
+shell_exec("php artisan vendor:publish");
