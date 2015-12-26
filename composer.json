@@ -1,0 +1,17 @@
+{
+    "name": "igorwanbarros/commands-laravel",
+    "description": "Commandos para projetos em Laravel",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Igor Wanderley",
+            "email": "igorwanbarros@gmail.com"
+        }
+    ],
+    "require": {
+      "php": ">=5.5.9",
+      "laravel/framework": "~5.1"
+    },
+    "minimum-stability": "dev"
+}
