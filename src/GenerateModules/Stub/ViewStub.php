@@ -21,6 +21,7 @@ class ViewStub extends AbstractStub
 
     public function replacesDefaultFields()
     {
-        $this->setReplace('module', $this->getCamelCase($this->arguments('module')));
+        $this->setReplace('module', $this->getCamelCase($this->arguments('module')))
+            ->setReplace('fileName', ucfirst(str_replace(['-', '_', '.'], ' ', $this->getFilePath())));
     }
 }

@@ -1,2 +1,2 @@
-<h1>{{module}} - {{fileName}}</h1>
+<h1>{{module}}</h1>
 <p>Your code here . . .</p>
