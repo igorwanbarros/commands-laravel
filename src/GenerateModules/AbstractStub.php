@@ -6,25 +6,27 @@ namespace Igorwanbarros\CommandsLaravel\GenerateModules;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\App;
 
-abstract class AbstractMake
+abstract class AbstractStub
 {
 
     private     $files;
     private     $namesModules       = [];
-    private     $fileExtension      = '.php';
-    private     $fileName           = 'default';
+    private     $fileExtension      = '';
+    private     $fileName           = '.empty';
     private     $filePath           = '';
     private     $stubPath           = 'templates/';
     private     $currentPath;
     private     $arguments;
     private     $package            = '';
     private     $replacedStub       = null;
+    private     $namespace          = '';
 
 
-    public function __construct(array $arguments)
+    public function __construct(Filesystem $file, array $arguments)
     {
-        $this->files        = new Filesystem();
+        $this->files        = $file;
         $this->arguments    = $arguments;
+        $this->setStubPath(__DIR__ . '/../templates/empty.stub');
     }
 
 
@@ -277,6 +279,25 @@ abstract class AbstractMake
         }
 
         return false;
+    }
+
+
+
+    protected function getNamespace($strSearch)
+    {
+        if ($this->namespace != '') {
+            return $this->namespace;
+        }
+
+        if (!$this->arguments('module')) {
+            throw new \Exception("Not found argument `module`");
+        }
+        $package         = $this->getPackage() ? str_replace(['/', '\\\\'], '\\', $this->getPackage()) . '\\' : '';
+        $filePath        = str_replace('/', '\\', strstr($this->getFilePath(), $strSearch));
+
+        $this->namespace = $package . $this->getCamelCase($this->arguments('module')) . $filePath;
+
+        return $this->namespace;
     }
 
 

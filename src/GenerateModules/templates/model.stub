@@ -1,10 +1,10 @@
 <?php
 
-namespace {{package}}{{namespace}}\Models;
+namespace {{namespace}};
 
-use Igorwanbarros\BaseLaravel\Models\BaseModel;
+use Illuminate\Database\Eloquent\Model;
 
-class {{class}} extends BaseModel
+class {{class}} extends Model
 {
 
     protected $table = '{{table}}';
