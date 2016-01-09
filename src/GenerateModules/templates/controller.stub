@@ -2,11 +2,11 @@
 
 namespace {{namespace}};
 
-use Igorwanbarros\BaseLaravel\Controllers\BaseController;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 
-class {{class}}Controller extends BaseController
+class {{class}}Controller extends Controller
 {
     public function __construct()
     {

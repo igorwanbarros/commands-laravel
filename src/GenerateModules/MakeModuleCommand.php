@@ -67,6 +67,13 @@ class MakeModuleCommand extends Command implements SelfHandling
         return $this;
     }
 
+
+    public function getBaseDir()
+    {
+        return App::getFacadeApplication()->basePath();
+    }
+
+
     public function fire()
     {
         $this->buildClass();
@@ -133,7 +140,7 @@ class MakeModuleCommand extends Command implements SelfHandling
             $obj->setFileExtension($args['fileExtension']);
         }
 
-        if (isset($args['stubPath'])) {
+        if (isset($args['stubPath']) && $args['stubPath'] != '') {
             $obj->setStubPath($args['stubPath']);
         }
 

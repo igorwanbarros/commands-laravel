@@ -12,7 +12,8 @@ class MiddlewareStub extends AbstractStub
     {
         parent::__construct($file, $arguments);
 
-        $this->setFilePath('src/Http/Middlewares');
+        $this->setFilePath('src/Http/Middlewares')
+            ->setStubPath(__DIR__ . '/../templates/controller.stub');
     }
 
 

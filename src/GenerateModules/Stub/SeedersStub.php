@@ -12,7 +12,8 @@ class SeedersStub extends AbstractStub
     {
         parent::__construct($file, $arguments);
 
-        $this->setFilePath('src/Database/Seeders');
+        $this->setFilePath('src/Database/Seeders')
+             ->setStubPath(__DIR__ . '/../templates/controller.stub');
     }
 
 

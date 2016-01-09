@@ -51,6 +51,10 @@ abstract class AbstractStub
 
     public function getReplacedStub()
     {
+        if ($this->replacedStub == null) {
+            $this->replacedStub = $this->getStubFile();
+        }
+
         return $this->replacedStub;
     }
 
@@ -303,9 +307,9 @@ abstract class AbstractStub
 
     public function fullPathFileName()
     {
-        return $this->getcurrentPath() . '/' .
-                $this->arguments('module') . '/' .
-                $this->getFilePath() . '/' .
-                $this->getFileName() . $this->getFileExtension();
+        return $this->getcurrentPath()      . '/' .
+                $this->arguments('module')  . '/' .
+                $this->getFilePath()        . '/' .
+                $this->getFileName()        . $this->getFileExtension();
     }
 }

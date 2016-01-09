@@ -12,7 +12,8 @@ class MigrationsStub extends AbstractStub
     {
         parent::__construct($file, $arguments);
 
-        $this->setFilePath('src/Database/Migrations');
+        $this->setFilePath('src/Database/Migrations')
+            ->setStubPath(__DIR__ . '/../templates/empty.stub');
     }
 
 
