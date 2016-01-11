@@ -13,5 +13,10 @@
       "php": ">=5.5.9",
       "laravel/framework": "~5.1"
     },
+    "autoload": {
+      "psr-4": {
+        "Igorwanbarros\\CommandsLaravel\\": "vendor/igorwanbarros/commands-laravel/src/"
+      }
+    },
     "minimum-stability": "dev"
 }
