@@ -15,7 +15,7 @@
     },
     "autoload": {
       "psr-4": {
-        "Igorwanbarros\\CommandsLaravel\\": "vendor/igorwanbarros/commands-laravel/src/"
+        "Igorwanbarros\\CommandsLaravel\\": "src/"
       }
     },
     "minimum-stability": "dev"
