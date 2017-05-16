@@ -6,8 +6,6 @@ namespace Igorwanbarros\CommandsLaravel\GenerateModules;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Filesystem\Filesystem;
-
-use Igorwanbarros\CommandsLaravel\GenerateModules\AbstractStub;
 use Illuminate\Support\Facades\App;
 
 class MakeModuleCommand extends Command implements SelfHandling
@@ -80,7 +78,7 @@ class MakeModuleCommand extends Command implements SelfHandling
     }
 
 
-    private function buildClass()
+    protected function buildClass()
     {
         if (!$this->argument('module')) {
             throw new \Exception("Not found argument module.");
@@ -114,7 +112,7 @@ class MakeModuleCommand extends Command implements SelfHandling
     }
 
 
-    private function _objectBuild($obj)
+    protected function _objectBuild($obj)
     {
         $this->_confgurationClass($obj);
 
@@ -126,7 +124,7 @@ class MakeModuleCommand extends Command implements SelfHandling
     }
 
 
-    private function _setArgsObj($obj, array $args)
+    protected function _setArgsObj($obj, array $args)
     {
         if (isset($args['fileName'])) {
             $obj->setFileName($args['fileName']);
@@ -148,7 +146,7 @@ class MakeModuleCommand extends Command implements SelfHandling
     }
 
 
-    private function _confgurationClass($obj)
+    protected function _confgurationClass($obj)
     {
         $obj->setPackage($this->getMyPackage());
 
@@ -161,7 +159,7 @@ class MakeModuleCommand extends Command implements SelfHandling
     }
 
 
-    private function _verifyIsDirectory($files)
+    protected function _verifyIsDirectory($files)
     {
         $path = dirname(App::getFacadeApplication()->basePath()) . '/' . $this->argument('module');
 
